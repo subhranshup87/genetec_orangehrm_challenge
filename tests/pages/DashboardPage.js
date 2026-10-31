@@ -16,6 +16,10 @@ class DashboardPage {
     async navigateToPIM() {
         await this.clickPIM();
     }
+
+    async verifyDashboardPage() {
+        await this.page.waitForURL(/dashboard/);
+    }
 }
 
 module.exports = { DashboardPage };

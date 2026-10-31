@@ -3,11 +3,12 @@ const { defineBddConfig } = require('playwright-bdd');
 
 const testDir = defineBddConfig({
   features: 'tests/features/**/*.feature',
-  steps: ['tests/steps/**/*.js', 'tests/fixtures/**/*.js'],
+  steps: ['tests/steps/**/*.js'],
 });
 
 module.exports = defineConfig({
   testDir,
+  globalSetup: './globalScript.js',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -20,6 +21,7 @@ module.exports = defineConfig({
   reporter: [['html'], ['allure-playwright']],
 
   use: {
+    storageState: '.auth/user.json',
     headless: false,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry'
