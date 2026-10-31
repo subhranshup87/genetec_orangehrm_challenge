@@ -1,13 +1,12 @@
-// @ts-check
-import { defineConfig, devices } from '@playwright/test';
+const { defineConfig, devices } = require('@playwright/test');
 const { defineBddConfig } = require('playwright-bdd');
 
 const testDir = defineBddConfig({
-  features: 'features/**/*.feature',
-  steps: 'steps/**/*.js',
+  features: 'tests/features/**/*.feature',
+  steps: ['tests/steps/**/*.js', 'tests/fixtures/**/*.js'],
 });
 
-export default defineConfig({
+module.exports = defineConfig({
   testDir,
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -36,4 +35,3 @@ export default defineConfig({
     }
   ]
 });
-
