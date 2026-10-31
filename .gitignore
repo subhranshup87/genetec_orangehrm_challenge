@@ -1,0 +1,38 @@
+# Node modules
+node_modules/
+
+# Playwright
+playwright-report/
+test-results/
+blob-report/
+
+# Allure
+allure-results/
+allure-report/
+
+# BDD generated files
+.features-gen/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+
+# Coverage
+coverage/
+
+# Temporary files
+*.tmp
+*.swp
