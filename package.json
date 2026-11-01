@@ -19,10 +19,13 @@
     "@faker-js/faker": "^10.6.0",
     "@playwright/test": "^1.64.1",
     "@types/node": "^26.6.6",
+    "allure-commandline": "^2.46.1",
     "allure-playwright": "^3.14.0",
     "playwright-bdd": "^9.2.1"
   },
   "scripts": {
-    "test_regression": "bddgen && playwright test --grep @regression"
+    "test_regression": "bddgen && playwright test --grep @regression && npm run allure:generate && npm run allure:open",
+    "allure:generate": "allure generate allure-results --clean -o allure-report",
+    "allure:open": "allure open allure-report"
   }
 }
