@@ -5,7 +5,7 @@ async function createEmployeeData() {
     updatedFirstName: `Updated${faker.person.firstName()}`,
     middleName: faker.person.middleName(),
     lastName: faker.person.lastName(),
-    employeeId: faker.string.numeric(5),
+    employeeId: faker.string.numeric(7),
   };
 }
 
