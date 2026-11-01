@@ -47,7 +47,7 @@ jobs:
       run: npx playwright install-deps chromium
 
     - name: Run Playwright tests
-      run: npm test
+      run: npm run test_regression
       env:
         ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
         ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
