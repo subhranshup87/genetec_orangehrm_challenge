@@ -38,3 +38,11 @@ Then('user verifies the changes were saved successfully', async ({ pimPage, empl
     employeeData.updatedFirstName
   );
 });
+
+When('user deletes the new employee', async ({ pimPage, employeeData }) => {
+  await pimPage.deleteEmployee(employeeData.employeeId);
+});
+
+Then('user verifies the employee was deleted', async ({ pimPage, employeeData }) => {
+  await pimPage.verifyEmployeeDeleted(employeeData.employeeId);
+});

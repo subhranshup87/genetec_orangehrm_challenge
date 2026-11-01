@@ -23,6 +23,6 @@
     "playwright-bdd": "^9.2.1"
   },
   "scripts": {
-    "test": "bddgen && playwright test"
+    "test_regression": "bddgen && playwright test --grep @regression"
   }
 }

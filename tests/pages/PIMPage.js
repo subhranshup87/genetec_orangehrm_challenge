@@ -33,6 +33,17 @@ class PIMPage {
         // Search Employee
         this.searchButton = page.getByRole('button', { name: 'Search' });
         this.employeeRows = page.locator('.oxd-table-body .oxd-table-row');
+        this.openEmployeeDetailsButton = (employeeId) =>
+            this.employeeRow(employeeId).getByRole('button').first();
+        this.deleteEmployeeButton = (employeeId) =>
+            this.employeeRow(employeeId).getByRole('button').nth(1);
+        this.noRecordsFound = page.locator('span.oxd-text--span').filter({
+            hasText: 'No Records Found',
+        });
+        this.deleteConfirmationDialog = page.getByRole('dialog');
+        this.confirmDeleteButton = this.deleteConfirmationDialog.getByRole('button', {
+            name: /Yes, Delete/i,
+        });
     }
 
     async clickAddEmployee() {
@@ -63,8 +74,7 @@ class PIMPage {
     }
 
     async openEmployeeDetails(employeeId) {
-        const row = this.employeeRow(employeeId);
-        await row.getByRole('button').first().click();
+        await this.openEmployeeDetailsButton(employeeId).click();
         await expect(this.page).toHaveURL(/viewPersonalDetails/);
     }
 
@@ -84,6 +94,25 @@ class PIMPage {
         const employeeNameCell = this.employeeRow(employeeId).getByRole('cell').nth(2);
         await expect(employeeNameCell).toContainText(firstName);
         console.log(`Employee with ID: ${employeeId} has updated first name: ${firstName}`);
+    }
+
+    async deleteEmployee(employeeId) {
+        const row = this.employeeRow(employeeId);
+        await expect(row).toBeVisible();
+        await this.deleteEmployeeButton(employeeId).click();
+        await expect(this.deleteConfirmationDialog).toBeVisible();
+        await this.confirmDeleteButton.click();
+        await expect(this.successToast).toContainText('Successfully Deleted');
+    }
+
+    async verifyEmployeeDeleted(employeeId) {
+        const dashboardPage = new DashboardPage(this.page);
+        await dashboardPage.navigateToPIM();
+        await this.employeeId.clear();
+        await this.employeeId.fill(employeeId);
+        await this.searchButton.click();
+        await expect(this.employeeRow(employeeId)).toHaveCount(0);
+        await expect(this.noRecordsFound).toBeVisible();
     }
 
     employeeRow(employeeId) {
