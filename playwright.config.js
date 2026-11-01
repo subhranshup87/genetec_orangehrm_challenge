@@ -27,7 +27,7 @@ module.exports = defineConfig({
   use: {
     baseURL: 'https://opensource-demo.orangehrmlive.com/',
     storageState: '.auth/user.json',
-    headless: false,
+    headless: true,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry'
   },
