@@ -30,7 +30,9 @@ class PIMPage {
         this.successToast = page
             .locator('.oxd-toast-content-text')
             .filter({ hasText: 'Successfully' });
-        // Search Employee
+
+        // Employee List
+        this.employeeListLink = page.getByRole('link', { name: 'Employee List' });
         this.searchButton = page.getByRole('button', { name: 'Search' });
         this.employeeRows = page.locator('.oxd-table-body .oxd-table-row');
         this.openEmployeeDetailsButton = (employeeId) =>
@@ -44,10 +46,40 @@ class PIMPage {
         this.confirmDeleteButton = this.deleteConfirmationDialog.getByRole('button', {
             name: /Yes, Delete/i,
         });
+
+        // Job Tab
+        this.jobTab = page.getByRole('link', { name: 'Job', exact: true });
+        this.reportToTab = page.getByRole('link', { name: 'Report-to', exact: true });
+        this.jobTitleField = page.locator('.oxd-input-group').filter({
+            hasText: 'Job Title',
+        });
+        this.jobTitleDropdown = this.jobTitleField.locator('.oxd-select-text');
+        this.employmentStatusField = page.locator('.oxd-input-group').filter({
+            hasText: 'Employment Status',
+        });
+        this.employmentStatusDropdown = this.employmentStatusField.locator('.oxd-select-text');
+        this.subUnitField = page.locator('.oxd-input-group').filter({
+            hasText: 'Sub Unit',
+        });
+        this.subUnitDropdown = this.subUnitField.locator('.oxd-select-text');
+        this.jobFieldOption = (value) => page.getByRole('option', { name: value, exact: true });
+        this.selectedJobTitle = this.jobTitleField.locator('.oxd-select-text-input');
+        this.selectedEmploymentStatus = this.employmentStatusField.locator('.oxd-select-text-input');
+        this.selectedSubUnit = this.subUnitField.locator('.oxd-select-text-input');
     }
 
     async clickAddEmployee() {
         await this.addButton.click();
+    }
+
+    async navigateToEmployeeList() {
+        const dashboardPage = new DashboardPage(this.page);
+        await dashboardPage.navigateToPIM();
+        await this.employeeListLink.click();
+    }
+
+    async navigateToJobTab() {
+        await this.jobTab.click();
     }
 
     async createEmployee(firstName, middleName, lastName, employeeId) {
@@ -65,6 +97,7 @@ class PIMPage {
     async searchEmployee(employeeId) {
         const dashboardPage = new DashboardPage(this.page);
         await dashboardPage.navigateToPIM();
+        await this.employeeListLink.click();
         await this.employeeId.clear();
         await this.employeeId.fill(employeeId);
 
@@ -113,6 +146,35 @@ class PIMPage {
         await this.searchButton.click();
         await expect(this.employeeRow(employeeId)).toHaveCount(0);
         await expect(this.noRecordsFound).toBeVisible();
+    }
+
+    async updateEmployeeJobInformation(jobDetails) {
+        await this.navigateToJobTab();
+        await waitFor.element(this.jobTitleDropdown, 'visible', 5000);
+        await this.jobTitleDropdown.click();
+        await this.jobFieldOption(jobDetails.jobTitle).click();
+        await this.employmentStatusDropdown.click();
+        await this.jobFieldOption(jobDetails.employmentStatus).click();
+        await this.subUnitDropdown.click();
+        await this.jobFieldOption(jobDetails.subUnit).click();
+        await this.initialSaveButton.click();
+        await expect(this.successToast).toContainText('Successfully Updated');
+        console.log(`Updated Job Title: ${jobDetails.jobTitle}`);
+        console.log(`Updated Employment Status: ${jobDetails.employmentStatus}`);
+        console.log(`Updated Sub Unit: ${jobDetails.subUnit}`);
+    }
+
+    async verifyEmployeeJobInformationPersisted(employeeId, jobDetails) {
+        await this.searchEmployee(employeeId);
+        await this.openEmployeeDetails(employeeId);
+        await this.jobTab.click();
+        await waitFor.element(this.jobTitleDropdown, 'visible', 5000);
+        await expect(this.selectedJobTitle).toHaveText(jobDetails.jobTitle);
+        await expect(this.selectedEmploymentStatus).toHaveText(jobDetails.employmentStatus);
+        await expect(this.selectedSubUnit).toHaveText(jobDetails.subUnit);
+        console.log(`Verified Job Title: ${jobDetails.jobTitle}`);
+        console.log(`Verified Employment Status: ${jobDetails.employmentStatus}`);
+        console.log(`Verified Sub Unit: ${jobDetails.subUnit}`);
     }
 
     employeeRow(employeeId) {

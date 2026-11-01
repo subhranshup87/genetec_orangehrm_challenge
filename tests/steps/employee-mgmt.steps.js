@@ -46,3 +46,14 @@ When('user deletes the new employee', async ({ pimPage, employeeData }) => {
 Then('user verifies the employee was deleted', async ({ pimPage, employeeData }) => {
   await pimPage.verifyEmployeeDeleted(employeeData.employeeId);
 });
+
+When('user updates employee job information', async ({ pimPage, jobDetails, page }) => {
+  await pimPage.updateEmployeeJobInformation(jobDetails);
+});
+
+Then('user verifies the job information is persisted', async ({ pimPage, employeeData, jobDetails }) => {
+  await pimPage.verifyEmployeeJobInformationPersisted(
+    employeeData.employeeId,
+    jobDetails
+  );
+});

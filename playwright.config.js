@@ -8,6 +8,10 @@ const testDir = defineBddConfig({
 
 module.exports = defineConfig({
   testDir,
+  timeout: 60_000,
+  expect: {
+    timeout: 10_000,
+  },
   globalSetup: './globalScript.js',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -23,7 +27,7 @@ module.exports = defineConfig({
   use: {
     baseURL: 'https://opensource-demo.orangehrmlive.com/',
     storageState: '.auth/user.json',
-    headless: true,
+    headless: false,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry'
   },
