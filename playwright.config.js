@@ -21,6 +21,7 @@ module.exports = defineConfig({
   reporter: [['html'], ['allure-playwright']],
 
   use: {
+    baseURL: 'https://opensource-demo.orangehrmlive.com/',
     storageState: '.auth/user.json',
     headless: false,
     screenshot: 'only-on-failure',

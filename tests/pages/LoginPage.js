@@ -15,7 +15,7 @@ class LoginPage {
     }
 
     async navigate() {
-        await this.page.goto(process.env.ORANGEHRM_URL);
+        await this.page.goto('/');
     }
 
     async enterUsername(username) {

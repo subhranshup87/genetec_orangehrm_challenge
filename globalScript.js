@@ -1,11 +1,11 @@
 const { chromium } = require('@playwright/test');
 const { LoginPage } = require('./tests/pages/LoginPage');
 
-async function globalSetup() {
+async function globalSetup(config) {
   process.loadEnvFile('.env');
   const browser = await chromium.launch();
   try {
-    const context = await browser.newContext();
+    const context = await browser.newContext({ baseURL: config.projects[0].use.baseURL });
     const page = await context.newPage();
     const loginPage = new LoginPage(page);
 
