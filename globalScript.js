@@ -1,8 +1,11 @@
 const { chromium } = require('@playwright/test');
+const { existsSync } = require('node:fs');
 const { LoginPage } = require('./tests/pages/LoginPage');
 
 async function globalSetup(config) {
-  process.loadEnvFile('.env');
+  if (existsSync('.env')) {
+    process.loadEnvFile('.env');
+  }
   const browser = await chromium.launch();
   try {
     const context = await browser.newContext({ baseURL: config.projects[0].use.baseURL });
