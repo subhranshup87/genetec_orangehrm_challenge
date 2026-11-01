@@ -3,7 +3,7 @@ const { defineBddConfig } = require('playwright-bdd');
 
 const testDir = defineBddConfig({
   features: 'tests/features/**/*.feature',
-  steps: ['tests/steps/**/*.js'],
+  steps: ['tests/steps/**/*.js', 'tests/fixtures/**/*.js'],
 });
 
 module.exports = defineConfig({
