@@ -24,7 +24,7 @@
     "playwright-bdd": "^9.2.1"
   },
   "scripts": {
-    "test_regression": "bddgen && playwright test --grep @regression && npm run allure:generate && npm run allure:open",
+    "test_regression": "bddgen && playwright test --grep @regression && npm run allure:generate",
     "allure:generate": "allure generate allure-results --clean -o allure-report",
     "allure:open": "allure open allure-report"
   }

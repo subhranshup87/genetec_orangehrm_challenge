@@ -51,7 +51,18 @@ jobs:
       env:
         ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
         ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
-        
+
+    - name: Generate Allure report
+      if: ${{ always() }}
+      run: npm run allure:generate
+
+    - uses: actions/upload-artifact@v4
+      if: ${{ always() }}
+      with:
+        name: allure-report
+        path: allure-report/
+        retention-days: 5
+
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
